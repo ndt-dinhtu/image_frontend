@@ -16,7 +16,7 @@ const ImageView = ({ images, loadImages }) => {
     } catch (error) {
       console.error(error);
       toast.error("Failed to delete image.");
-    }
+    }                                                                                                                                                             
   };
 
   const handleEdit = (image) => {

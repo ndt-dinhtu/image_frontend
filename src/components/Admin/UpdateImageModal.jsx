@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import PropTypes from "prop-types"; // Thêm import PropTypes
+import PropTypes from "prop-types"; 
 
 const UpdateImageModal = ({ image, onClose, onUpdateSuccess }) => {
   const [updatedImage, setUpdatedImage] = useState({
