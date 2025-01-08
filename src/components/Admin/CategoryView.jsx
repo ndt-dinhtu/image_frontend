@@ -1,7 +1,7 @@
-
 import { toast } from "react-toastify";
-import { createCategory, deleteCategory } from "../../api/admin";
+import { deleteCategory } from "../../api/admin";
 import CreateCategory from "./CreateCategory";
+import PropTypes from "prop-types";
 
 const CategoryView = ({ categories, loadCategories, setSelectedCategory }) => {
   const handleDeleteCategory = async (id) => {
@@ -52,6 +52,12 @@ const CategoryView = ({ categories, loadCategories, setSelectedCategory }) => {
       </table>
     </div>
   );
+};
+
+CategoryView.propTypes = {
+  categories: PropTypes.array.isRequired,
+  loadCategories: PropTypes.func.isRequired,
+  setSelectedCategory: PropTypes.func.isRequired,
 };
 
 export default CategoryView;

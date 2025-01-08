@@ -1,18 +1,30 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { createCategory } from "../../api/admin";
+import PropTypes from "prop-types";
 
 const CreateCategory = ({ loadCategories }) => {
   const [newCategory, setNewCategory] = useState({ name: "", description: "" });
 
   const handleCreateCategory = async () => {
+
+    if (!newCategory.name || !newCategory.description) {
+      toast.error("Vui lòng nhập đủ thông tin!");
+      return;
+    }
+
     try {
+
       await createCategory(newCategory);
       loadCategories();
       toast.success("Category created successfully!");
+      setNewCategory({ name: "", description: "" });
     } catch (error) {
-      console.error(error);
-      toast.error("Failed to create category.");
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(`Server Error: ${error.response.data.message}`);
+      } else {
+        toast.error("Failed to create category. Please try again later.");
+      }
     }
   };
 
@@ -45,6 +57,10 @@ const CreateCategory = ({ loadCategories }) => {
       </button>
     </div>
   );
+};
+
+CreateCategory.propTypes = {
+  loadCategories: PropTypes.func.isRequired,
 };
 
 export default CreateCategory;

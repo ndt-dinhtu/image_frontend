@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import PropTypes from "prop-types"; // Thêm import PropTypes
 
 const UpdateCategoryModal = ({ category, onClose, onUpdateSuccess }) => {
     const [updatedCategory, setUpdatedCategory] = useState({
@@ -71,4 +72,14 @@ const UpdateCategoryModal = ({ category, onClose, onUpdateSuccess }) => {
     );
   };
   
-  export default UpdateCategoryModal;
+  UpdateCategoryModal.propTypes = {
+    category: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+    }).isRequired,
+    onClose: PropTypes.func.isRequired,
+    onUpdateSuccess: PropTypes.func.isRequired,
+  };
+
+export default UpdateCategoryModal;
