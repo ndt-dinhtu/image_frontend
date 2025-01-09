@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import CategoryButton from "./CategoryButton";
 
 const CategoryList = ({ categories, selectedCategory, onCategoryClick }) => {
@@ -13,6 +14,19 @@ const CategoryList = ({ categories, selectedCategory, onCategoryClick }) => {
       ))}
     </div>
   );
+};
+
+CategoryList.propTypes = {
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  selectedCategory: PropTypes.shape({
+    name: PropTypes.string,
+  }),
+  onCategoryClick: PropTypes.func.isRequired,
 };
 
 export default CategoryList;

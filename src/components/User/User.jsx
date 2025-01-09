@@ -1,9 +1,14 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import SearchBar from "./SearchBar";
 import CategoryList from "./CategoryList";
 import ImageGrid from "./ImageGrid";
 import Pagination from "./Pagination";
+
+import {
+  fetchCategories,
+  fetchImagesByCategory,
+  searchImages,
+} from "../../api/user";
 
 const User = () => {
   const [categories, setCategories] = useState([]);
@@ -15,29 +20,34 @@ const User = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const loadCategories = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/categories");
-        setCategories(response.data);
+        const categoriesData = await fetchCategories();
+        setCategories(categoriesData);
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Error loading categories:", error);
       }
     };
-    fetchCategories();
+    loadCategories();
   }, []);
 
-  const fetchImagesByCategory = async (categoryName, page) => {
+  const handleCategoryClick = async (category) => {
+    setSelectedCategory(category);
+    setSearchQuery("");
+    setCurrentPage(1);
+    loadImagesByCategory(category.name, 1);
+  };
+
+  const loadImagesByCategory = async (categoryName, page) => {
     setLoading(true);
     try {
       const skip = (page - 1) * 24;
-      const response = await axios.get(
-        `http://localhost:5000/api/images/category/${categoryName}?skip=${skip}&limit=24`
-      );
-      setImages(response.data.images || []);
-      setTotalPages(response.data.totalPages);
+      const data = await fetchImagesByCategory(categoryName, skip, 24);
+      setImages(data.images || []);
+      setTotalPages(data.totalPages);
       setLoading(false);
     } catch (error) {
-      console.error("Error fetching images:", error);
+      console.error("Error loading images:", error);
       setLoading(false);
     }
   };
@@ -46,15 +56,13 @@ const User = () => {
     setSearchQuery(query);
     if (query === "") {
       if (selectedCategory) {
-        fetchImagesByCategory(selectedCategory.name, 1);
+        loadImagesByCategory(selectedCategory.name, 1);
       }
     } else {
       setLoading(true);
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/images/search?name=${query}`
-        );
-        setImages(response.data);
+        const results = await searchImages(query);
+        setImages(results);
         setLoading(false);
         setTotalPages(1);
       } catch (error) {
@@ -70,12 +78,7 @@ const User = () => {
       <CategoryList
         categories={categories}
         selectedCategory={selectedCategory}
-        onCategoryClick={(category) => {
-          setSelectedCategory(category);
-          setSearchQuery("");
-          setCurrentPage(1);
-          fetchImagesByCategory(category.name, 1);
-        }}
+        onCategoryClick={handleCategoryClick}
       />
       {selectedCategory && (
         <ImageGrid
@@ -91,7 +94,7 @@ const User = () => {
           onPageClick={(page) => {
             setCurrentPage(page);
             if (selectedCategory) {
-              fetchImagesByCategory(selectedCategory.name, page);
+              loadImagesByCategory(selectedCategory.name, page);
             }
           }}
         />

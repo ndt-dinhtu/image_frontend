@@ -1,6 +1,7 @@
+import PropTypes from "prop-types";
 import ImageCard from "./ImageCard";
 
-const ImageGrid = ({ images, loading, searchQuery }) => {
+const ImageGrid = ({ images, loading }) => {
   if (loading) {
     return <div className="text-center py-4">Loading...</div>;
   }
@@ -14,6 +15,23 @@ const ImageGrid = ({ images, loading, searchQuery }) => {
       </div>
     </div>
   );
+};
+
+ImageGrid.propTypes = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      imageUrl: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      category: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+      }).isRequired,
+      shortDescription: PropTypes.string,
+      descriptionLink: PropTypes.string,
+    })
+  ).isRequired,
+  loading: PropTypes.bool.isRequired,
+  searchQuery: PropTypes.string.isRequired,
 };
 
 export default ImageGrid;

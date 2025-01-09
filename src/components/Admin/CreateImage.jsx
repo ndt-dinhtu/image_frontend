@@ -28,7 +28,8 @@ const CreateImage = ({ loadImages }) => {
       const {
         name,
         shortDescription,
-        descriptionLink,
+        descriptionLink, 
+        
         categoryName,
         imageFile,
       } = formData;
@@ -107,8 +108,9 @@ const CreateImage = ({ loadImages }) => {
 };
 
 CreateImage.propTypes = {
-    loadImages: PropTypes.array.isRequired,
+  loadImages: PropTypes.func.isRequired, 
 };
+
 
 
 export default CreateImage;
