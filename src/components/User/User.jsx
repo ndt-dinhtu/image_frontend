@@ -10,7 +10,7 @@ import {
   searchImages,
 } from "../../api/user";
 
-const User = () => {
+const User = ({ toggleDarkMode }) => {
   const [categories, setCategories] = useState([]);
   const [images, setImages] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -73,7 +73,17 @@ const User = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 bg-gray-100 dark:bg-gray-900 transition-colors duration-500">
+
+      <div className="flex justify-between items-center mb-4">
+        <input
+          type="checkbox"
+          className="toggle-switch"
+          onChange={toggleDarkMode}
+          defaultChecked={false}
+        />
+      </div>
+
       <SearchBar searchQuery={searchQuery} onSearchChange={handleSearch} />
       <CategoryList
         categories={categories}
