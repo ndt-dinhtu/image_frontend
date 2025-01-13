@@ -3,8 +3,17 @@ import PropTypes from "prop-types";
 const ImageCard = ({ image }) => {
   const handleCopyLink = () => {
     if (image.descriptionLink) {
-      navigator.clipboard.writeText(image.descriptionLink).then(() => alert("Link copied!")).catch(err => console.error("Error copying link", err));
+      navigator.clipboard
+        .writeText(image.descriptionLink)
+        .then(() => alert("Link copied!"))
+        .catch((err) => console.error("Error copying link", err));
     }
+  };
+
+  const truncateLink = (link, maxLength = 35) => {
+    return link && link.length > maxLength
+      ? link.slice(0, maxLength) + "..."
+      : link;
   };
 
   return (
@@ -15,11 +24,21 @@ const ImageCard = ({ image }) => {
         className="w-full h-40 object-cover"
       />
       <div className="p-2">
-        <h3 className="text-md font-medium text-gray-900 dark:text-white">{image.name}</h3>
-        <h3 className="text-md font-medium text-gray-900 dark:text-white">{image.category.name}</h3>
-        <p className="text-sm text-gray-600 dark:text-gray-300">{image.shortDescription}</p>
+        <div className="flex justify-between items-center">
+          <h3 className="text-md font-medium text-gray-900 dark:text-white">
+            {image.name}
+          </h3>
+          <h3 className="text-md font-semibold text-gray-900 dark:text-white text-xl">
+            {image.category.name}
+          </h3>
+        </div>
+        <p className="text-sm text-gray-600 dark:text-gray-300">
+          {image.shortDescription}
+        </p>
         <div className="flex items-center gap-2 mt-2">
-          <p className="text-sm text-gray-600 dark:text-gray-300">{image.descriptionLink}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-300">
+            {truncateLink(image.descriptionLink)}
+          </p>
           {image.descriptionLink && (
             <button
               onClick={handleCopyLink}
@@ -33,7 +52,6 @@ const ImageCard = ({ image }) => {
     </div>
   );
 };
-
 
 ImageCard.propTypes = {
   image: PropTypes.shape({
