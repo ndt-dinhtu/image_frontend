@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api";
+
+const API_URL = "http://20.0.1.245:5000/api";
 
 // Fetch categories
 export const fetchCategories = async () => {

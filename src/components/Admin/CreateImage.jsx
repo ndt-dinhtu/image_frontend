@@ -29,7 +29,6 @@ const CreateImage = ({ loadImages }) => {
         name,
         shortDescription,
         descriptionLink, 
-        
         categoryName,
         imageFile,
       } = formData;
